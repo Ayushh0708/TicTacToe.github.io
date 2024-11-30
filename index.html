@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f8ff;
+        }
+        .game-container {
+            text-align: center;
+        }
+        h1 {
+            color: #4a90e2;
+        }
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .cell {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            background-color: #fff;
+            border: 2px solid #ccc;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .cell:hover {
+            background-color: #f0f0f0;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #357ab7;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>Tic-Tac-Toe</h1>
+        <div class="board" id="board">
+            <!-- 9 Cells for the Tic-Tac-Toe grid -->
+            <div class="cell" id="cell0" onclick="makeMove(0)"></div>
+            <div class="cell" id="cell1" onclick="makeMove(1)"></div>
+            <div class="cell" id="cell2" onclick="makeMove(2)"></div>
+            <div class="cell" id="cell3" onclick="makeMove(3)"></div>
+            <div class="cell" id="cell4" onclick="makeMove(4)"></div>
+            <div class="cell" id="cell5" onclick="makeMove(5)"></div>
+            <div class="cell" id="cell6" onclick="makeMove(6)"></div>
+            <div class="cell" id="cell7" onclick="makeMove(7)"></div>
+            <div class="cell" id="cell8" onclick="makeMove(8)"></div>
+        </div>
+        <div class="result" id="result"></div>
+        <button onclick="resetGame()">Restart Game</button>
+    </div>
+
+    <script>
+        let currentPlayer = 'X';
+        let board = ['', '', '', '', '', '', '', '', ''];
+
+        function makeMove(cellIndex) {
+            if (board[cellIndex] !== '') return; // If cell is already occupied, do nothing
+
+            board[cellIndex] = currentPlayer;
+            document.getElementById(`cell${cellIndex}`).textContent = currentPlayer;
+
+            if (checkWin()) {
+                document.getElementById('result').textContent = `${currentPlayer} Wins!`;
+            } else if (board.every(cell => cell !== '')) {
+                document.getElementById('result').textContent = 'It\'s a Tie!';
+            } else {
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            }
+        }
+
+        function checkWin() {
+            const winCombinations = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+                [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+                [0, 4, 8], [2, 4, 6] // Diagonals
+            ];
+
+            for (let combo of winCombinations) {
+                const [a, b, c] = combo;
+                if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function resetGame() {
+            board = ['', '', '', '', '', '', '', '', ''];
+            currentPlayer = 'X';
+            document.getElementById('result').textContent = '';
+            for (let i = 0; i < 9; i++) {
+                document.getElementById(`cell${i}`).textContent = '';
+            }
+        }
+    </script>
+</body>
+</html>
